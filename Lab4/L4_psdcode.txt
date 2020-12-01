@@ -1,0 +1,237 @@
+hexadecimals: 0x01A, 0xFA1.... 
+
+given input: 
+	a0 HOLDS number of inputs===================s1
+	a1 points to a list of pointers that points to value of arguments======s2
+	s1 = list of pointers that hold arguments
+	t0 = value of arguments
+	
+	a0=numArgs	
+	a1-->args[t0]
+	a1-->args[000] // t0 = 000
+	4(a1)-->args[004] // 4(a1)-->args[4(t0)]
+	8(a1)-->args[008]....ect..
+	a1=000
+	at adress 000, the value is hex representation of some number (0x12 maybe)
+		that number = t0
+		
+
+	
+	while a1 <= args[64(t0)]
+	
+1. take in input:
+	$a1-->input[0]
+	$a0=number of args
+	save adress of a1 to s0
+2. Parse input:
+	t0 stars at 0
+	lw $t1, input[t0]
+	do some math on t1
+	store finished math value to s1
+	incements until hits null
+3. once null
+	
+	
+
+-----------Coverting:
+	0x1AF
+	
+	 
+
+addi $t0, $0, 0x49
+addi $t1, $0, 0x57
+addi $t2, $0, 0x67
+
+subi $sp, $sp, 8
+sw $t0, 0($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+lw $t4, 0($sp)
+addi $sp, $sp, 4
+
+
+LETS TRY STORING EACH INPUT 0-8 INTO $t0-$t8
+
+
+It takes minus 48 to convert the numbers and 55 to convert the Letters
+
+
+a0 = numArgs
+a1 = adress of args
+s1 = a0
+s2 = a1
+s0 = 0
+
+while (bge $s0, $s1, done)
+
+	lb $t1, 2($s2)
+    while2 (beq $t1, '\0', nextWord)
+    if (blt $t1, 'A', number)
+	subi $t1, $t1, 55
+	sll $t1, $t1, 4
+	addi $s2, $s2, 1
+		j while2
+number:
+	subi $t1, $t1, 48
+	sll $t1, $t1, 4
+	addi $s2, $s2, 1
+		j while2
+nextWord:
+	lb $t2, 4($s2)
+		j while
+
+done:
+print
+
+while:
+	 s0 (0) <= s1 (numArgs) 
+
+	t1=2(args[s2])
+	la t2 t1
+	j convert
+
+convert:
+	lw t2 0(t1)
+while2:
+	t2 != null doneConvert
+	add t3 0 t2
+	sll t3, t3, 4
+	...one more step...
+	sub $sp, $sp-8
+	sw $t3, 0($sp)
+	add $t2 $t2 1
+	add sp sp 1
+	  j while2
+doneConvert:
+	
+	 		
+
+
+
+
+
+
+
+
+
+
+11 in your case
+just look up what the syscalls do
+the printing ones that you'll use on this lab are 1, 4, and 11
+1 prints numbers
+so 
+li $v0, 1
+li $a0, 48 
+syscall
+that prints 48
+li $v0, 4
+li $a0, 48 
+syscall
+that crashes because 48 is not a string
+li $v0, 11
+li $a0, 48 
+syscall
+that prints 0, because '0' is 48 in ascii
+
+
+LETS TRY RUNNING THE COUNT BUT DONT START DOING ANY MATH UNTILL ITS PAST THE 'X'
+
+input will always be "0x.."
+
+.data
+        urinput: .asciiz "\nFuck youuuu CUNT!!:\n"
+.text
+
+main:
+
+add $s1, $a1, $zero
+add $s0, $a0, $zero
+addi $s2, $zero, 0
+
+while:
+    ble $s2, $s0, done
+	lb $t1, 2($s1)
+      jal convertA
+    
+        lb $t2, 3($s1)
+       jal convertB
+
+     add $s5, $t6, $s3
+
+     li $v0, 1
+     la $a0, ($s5)
+     syscall
+     addi $s2, $s2, 1
+     addi $s1, $s1, 4
+done:
+
+	li $v0, 10
+        syscall
+
+
+
+
+convertA:
+    ble $t1, 65, convertNumA
+	subi $t1, $t1, 55
+        sll $t1, $t1, 4
+        add $t6, $t1, $zero
+        jr $ra
+
+
+convertNumA:
+        subi $t1, $t1, 48
+        sll $t1, $t1, 4
+        add $t6, $t1, $zero
+        jr $ra    
+
+
+
+convertB:
+    ble $t2, 65, convertNumB
+	subi $t2, $t2, 55
+        sll $t2, $t2, 4
+        add $s3, $t2, $zero
+        jr $ra
+
+
+convertNumB:
+        subi $t2, $t2, 48
+        sll $t2, $t2, 4
+        add $s3, $t2, $zero
+        jr $ra    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+everytime i push (after i sw)
+pop first then add (lw first then add)
+
+for every push i do, i must do a corresponding pop	
+
+
+whileMain:
+    
+
+
+Go one step at a time, length correct? 
+    
+
+
+
+
+
+
+
+
+	
